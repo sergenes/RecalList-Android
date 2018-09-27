@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.nes.transfragment.LinearLayoutAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.cards.CardsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/titleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|top"
+                    android:paddingTop="@dimen/main_title_top_padding"
+                    android:paddingBottom="10dp"
+                    android:text="@string/cards_title"
+                    android:textSize="@dimen/main_title_text_size" />
+
+                <info.hoang8f.android.segmented.SegmentedGroup xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/segmented2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    segmentedgroup:sc_border_width="2dp"
+                    segmentedgroup:sc_corner_radius="10dp">
+
+                    <RadioButton
+                        android:id="@+id/button21"
+                        style="@style/RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:paddingEnd="30dp"
+                        android:paddingStart="30dp"
+                        android:text="English" />
+
+                    <RadioButton
+                        android:id="@+id/button22"
+                        style="@style/RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="30dp"
+                        android:paddingStart="30dp"
+                        android:text="Russian" />
+                </info.hoang8f.android.segmented.SegmentedGroup>
+            </LinearLayout>
+
+            <com.wenchao.cardstack.CardStack
+                android:id="@+id/cardStack"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingBottom="60dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="170dp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/bottomToolBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/grey">
+
+            <Button
+                android:id="@+id/playButton"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="start|bottom"
+                android:background="@android:color/transparent"
+                android:text="play"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/sourceButton"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="end|bottom"
+                android:background="@android:color/transparent"
+                android:text="speaker"
+                android:textAllCaps="false" />
+        </FrameLayout>
+
+    </LinearLayout>
+</com.nes.transfragment.LinearLayoutAnimator>

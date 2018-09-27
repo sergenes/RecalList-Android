@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.nes.transfragment.LinearLayoutAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.init.LaunchFragment">
+
+    <TextView
+        android:paddingBottom="50dp"
+        android:textSize="@dimen/main_title_text_size"
+        android:gravity="center|bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/loading_title" />
+
+</com.nes.transfragment.LinearLayoutAnimator>

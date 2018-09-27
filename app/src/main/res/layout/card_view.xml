@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:background="@android:color/transparent">
+    <FrameLayout
+        android:id="@+id/cardBackContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rnd_bg_blue">
+
+        <TextView
+            android:id="@+id/translateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/cardsWordTextStyle"
+            android:layout_gravity="center"
+            android:text="Translation" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center">
+            <Button
+                android:id="@+id/backButton"
+                android:layout_gravity="start|bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="start|center"
+                android:background="@android:color/transparent"
+                android:textAllCaps="false"
+                android:text="back" />
+
+            <Button
+                android:id="@+id/markButton"
+                android:layout_gravity="end|bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@android:color/transparent"
+                android:textAllCaps="false"
+                android:gravity="end|center"
+                android:text="mark as learned" />
+        </FrameLayout>
+
+
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/cardFrontContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rnd_bg_blue">
+
+        <TextView
+            android:id="@+id/wordTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/cardsWordTextStyle"
+            android:layout_gravity="center"
+            android:text="Word" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center">
+            <Button
+                android:id="@+id/peepButton"
+                android:layout_gravity="start|bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@android:color/transparent"
+                android:textAllCaps="false"
+                android:text="peep" />
+            <TextView
+                android:id="@+id/textNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom|center"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="1 of 1"
+                android:textSize="12dp" />
+            <Button
+                android:id="@+id/sayButton"
+                android:layout_gravity="end|bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@android:color/transparent"
+                android:textAllCaps="false"
+                android:text="say" />
+        </FrameLayout>
+
+
+    </FrameLayout>
+</FrameLayout>
