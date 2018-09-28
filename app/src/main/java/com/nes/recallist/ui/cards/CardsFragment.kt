@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,10 +32,12 @@ interface CardsScreenProtocol {
     fun context(): Context
     fun peepPressed(index: Int)
     fun sayPressed(index: Int)
+    fun markPressed(index: Int)
 }
 
 // MARK: - Card is data model
 class Card(var index: Int, item: ArrayList<*>) {
+
     var word: String = item[2] as String
     var translation: String = item[3] as String
     var from: String = item[0] as String
@@ -49,9 +53,14 @@ class Card(var index: Int, item: ArrayList<*>) {
  *
  */
 class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScreenProtocol {
-    var t1: TextToSpeech? = null
+
+    //CardsScreenProtocol
     override fun context(): Context {
         return context!!
+    }
+
+    override fun markPressed(index: Int){
+
     }
 
     override fun peepPressed(index: Int) {
@@ -61,13 +70,24 @@ class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScr
 
     override fun sayPressed(index: Int) {
         val card: Card = cardStack.adapter?.getItem(index) as Card
-
+        when {
+            "Russian" in card.from -> {
+                t1?.language = Locale("ru", "RU")
+            }
+            "Hebrew" in card.from -> {
+                t1?.language = Locale("he", "IL")
+            }
+            else -> {
+                t1?.language = Locale.UK
+            }
+        }
         val toSpeak = card.word
         Toast.makeText(activity, toSpeak, Toast.LENGTH_SHORT).show()
         t1?.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null)
     }
 
     private var dataAdapter: CardsDataAdapter? = null
+    private var t1: TextToSpeech? = null
 
     override fun getFragmentContainer(): Int {
         return R.id.fragmentContainer
@@ -106,6 +126,8 @@ class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScr
                         dataAdapter?.add(it)
                     }
                     bottomToolBarLayout.visibility = View.VISIBLE
+                    leftRadioButton.text = dataAdapter?.getItem(0)?.from
+                    rightRadioButton.text = dataAdapter?.getItem(0)?.to
                     hideProgress()
                 }
 
@@ -135,10 +157,19 @@ class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScr
             }
         }
 
-        //todo show error message
+        leftRadioButton.setOnClickListener {
+            dataAdapter?.direction = 0
+            dataAdapter?.notifyDataSetChanged()
+        }
 
+        rightRadioButton.setOnClickListener {
+            dataAdapter?.direction = 1
+            dataAdapter?.notifyDataSetChanged()
+        }
     }
 
+
+    // CardStack.CardEventListener
     override fun swipeStart(section: Int, distance: Float): Boolean {
         return true
     }

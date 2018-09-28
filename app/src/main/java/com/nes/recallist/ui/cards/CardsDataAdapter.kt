@@ -22,6 +22,7 @@ class CardsDataAdapter(private var controller: CardsScreenProtocol) :
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
+    var direction = 0
     var distance = 10000
     var scale = context.resources.displayMetrics.density * distance
 
@@ -100,7 +101,7 @@ class CardsDataAdapter(private var controller: CardsScreenProtocol) :
         }
 
         val card = this.getItem(position)
-        holder.setup(card!!, position, count)
+        holder.setup(card!!, position, count, direction)
 
         if (!holder.sayButton.hasOnClickListeners()) {
             holder.sayButton.setOnClickListener {
@@ -113,6 +114,14 @@ class CardsDataAdapter(private var controller: CardsScreenProtocol) :
             controller.peepPressed(it.tag as Int)
             flipForward(holder.cardFrontContainer, holder.cardBackContainer)
         }
+
+        holder.markButton.setOnClickListener {
+            controller.markPressed(it.tag as Int)
+            flipBackward(holder.cardBackContainer, holder.cardFrontContainer)
+
+            holder.cardFrontContainer.backgroundDrawable = context.getExtDrawable(R.drawable.rnd_bg_green)
+            holder.cardBackContainer.backgroundDrawable = context.getExtDrawable(R.drawable.rnd_bg_green)
+        }
 //        }
 
 //        if (!holder.backButton.hasOnClickListeners()) {
@@ -121,15 +130,23 @@ class CardsDataAdapter(private var controller: CardsScreenProtocol) :
         }
 //        }
 
-        if (position % 2 == 0) {
-            holder.cardContainer.background = null
-            holder.cardFrontContainer.backgroundDrawable = context.getExtDrawable(R.drawable.rnd_bg_blue)
-            holder.cardBackContainer.backgroundDrawable = context.getExtDrawable(R.drawable.rnd_bg_blue)
+        holder.cardContainer.background = null
+        if (card.peeped > 10) {
+            holder.cardFrontContainer.backgroundDrawable = context.getExtDrawable(R.drawable.rnd_bg_pink)
+            holder.cardBackContainer.backgroundDrawable = context.getExtDrawable(R.drawable.rnd_bg_pink)
+        } else if (card.peeped == -1) {
+            holder.cardFrontContainer.backgroundDrawable = context.getExtDrawable(R.drawable.rnd_bg_green)
+            holder.cardBackContainer.backgroundDrawable = context.getExtDrawable(R.drawable.rnd_bg_green)
         } else {
-            holder.cardContainer.background = null
-            holder.cardFrontContainer.background = context.getExtDrawable(R.drawable.rnd_bg_purple)
-            holder.cardBackContainer.background = context.getExtDrawable(R.drawable.rnd_bg_purple)
+            if (position % 2 == 0) {
+                holder.cardFrontContainer.backgroundDrawable = context.getExtDrawable(R.drawable.rnd_bg_blue)
+                holder.cardBackContainer.backgroundDrawable = context.getExtDrawable(R.drawable.rnd_bg_blue)
+            } else {
+                holder.cardFrontContainer.background = context.getExtDrawable(R.drawable.rnd_bg_purple)
+                holder.cardBackContainer.background = context.getExtDrawable(R.drawable.rnd_bg_purple)
+            }
         }
+
 
         return view!!
     }
@@ -150,11 +167,20 @@ private class CardViewHolder(row: View, scale: Float) {
 
     var cardContainer: FrameLayout = row.find(R.id.cardContainer)
 
-    fun setup(card:Card, position:Int, count:Int){
+    fun setup(card: Card, position: Int, count: Int, direction: Int) {
         val label: String = String.format("%s of %s", (position + 1), count)
-        wordTextView.text = card.word
+
+        if (direction == 0){
+            wordTextView.text = card.word
+            translateTextView.text = card.translation
+        }else{
+            wordTextView.text = card.translation
+            translateTextView.text = card.word
+        }
+
+
         textNumber.text = label
-        translateTextView.text = card.translation
+
         peepButton.tag = position
         backButton.tag = position
         sayButton.tag = position
