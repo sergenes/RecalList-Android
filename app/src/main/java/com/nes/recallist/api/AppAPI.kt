@@ -166,7 +166,12 @@ class AppAPI private constructor(var context: Context) {
                         Card(index, item)
 
                 }.toList()
-                onSuccess(array)
+
+
+
+                onSuccess(array.sortedWith(compareByDescending {
+                    it.peeped
+                }))
             } catch (e: Exception) {
                 onFailure(e)
             }
