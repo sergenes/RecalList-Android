@@ -17,6 +17,8 @@ import com.google.api.services.drive.DriveScopes
 import com.google.api.services.drive.model.File
 import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.SheetsScopes
+import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest
+import com.google.api.services.sheets.v4.model.ValueRange
 import com.nes.recallist.BuildConfig
 import com.nes.recallist.ui.cards.Card
 import java.util.*
@@ -39,7 +41,7 @@ class AppAPI private constructor(var context: Context) {
             }
         }
 
-        fun with(context:Context): AppAPI {
+        fun with(context: Context): AppAPI {
             if (singleton == null) {
                 val var1 = AppAPI::class.java
                 synchronized(AppAPI::class.java) {
@@ -143,10 +145,45 @@ class AppAPI private constructor(var context: Context) {
         }
     }
 
+    fun updateSheetWithId(spreadsheetId: String, card: Card, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        val cardIndex: Int = card.index + 1
+        val range = "Phrasebook!E$cardIndex:E$cardIndex"
+
+        val sheetsAPI: Sheets = Sheets.Builder(AndroidHttp.newCompatibleTransport(),
+                JacksonFactory.getDefaultInstance(),
+                googleAccountCredential)
+                .setApplicationName("RecalList-Android")
+                .build()
+
+        //rows[columns[]]
+        val values: List<MutableList<Any>> = mutableListOf(mutableListOf(card.peeped as Any))
+        val valueRange = ValueRange().setValues(values)
+
+        valueRange.majorDimension = "ROWS"
+        valueRange.range = range
+
+        thread {
+            try {
+                val response = sheetsAPI.spreadsheets().values()
+                        .update(spreadsheetId, range, valueRange)
+                        .setValueInputOption("RAW")
+                        .execute()
+                if (response != null) {
+                    onSuccess()
+                } else {
+                    onFailure(Exception("Error:1 - can not update"))
+                }
+            } catch (e: Exception) {
+                onFailure(e)
+            }
+        }
+
+
+    }
+
     fun getSheetById(spreadsheetId: String, onSuccess: (List<Card>) -> Unit, onFailure: (Exception) -> Unit) {
         //            val spreadsheetId = "1apdhKnDAO1gERYc867XDspl8DFKRyeVPRWqG6aM50Sg"
         val range = "Phrasebook!A1:E"
-
 
         val sheetsAPI: Sheets = Sheets.Builder(AndroidHttp.newCompatibleTransport(),
                 JacksonFactory.getDefaultInstance(),
@@ -163,7 +200,7 @@ class AppAPI private constructor(var context: Context) {
                 val array: List<Card> = response.getValues().mapIndexed { index, value
                     ->
                     val item = value as ArrayList<*>
-                        Card(index, item)
+                    Card(index, item)
 
                 }.toList()
 

@@ -106,7 +106,13 @@ class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScr
 
     override fun peepPressed(index: Int) {
         val card: Card = cardStack.adapter?.getItem(index) as Card
-        Log.i(TAG, "card.word: " + card.word)
+        card.peeped+=1
+        AppAPI.singleton().updateSheetWithId(selectedSpreadsheetId ,card, onSuccess = {
+            Log.i(TAG, "card.updateSheetWithId: ok" )
+        }, onFailure = {
+            Log.i(TAG, "card.updateSheetWithId: error")
+        })
+
     }
 
 
@@ -150,6 +156,7 @@ class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScr
         }
     }
 
+    private lateinit var selectedSpreadsheetId:String
     private var dataAdapter: CardsDataAdapter? = null
     private var text2Speech: TextToSpeech? = null
     var currentWord: Direction = Direction.FRONT
@@ -185,11 +192,11 @@ class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScr
         })
 
         val act: MainActivity = activity as MainActivity
-
         titleTextView.text = act.selectedFile?.name
 
         act.selectedFile?.id.let { selectedFileId ->
-            AppAPI.singleton().getSheetById(selectedFileId!!, onSuccess = { list ->
+            selectedSpreadsheetId = selectedFileId!!
+            AppAPI.singleton().getSheetById(selectedFileId, onSuccess = { list ->
                 onUiThread {
                     list.forEach {
                         dataAdapter?.add(it)
