@@ -8,4 +8,6 @@
     <color name="green">#b2ffa1</color>
     <color name="blue">#adf4ff</color>
     <color name="purple">#b6caff</color>
+
+    <color name="lgrey">#e2e4e8</color>
 </resources>

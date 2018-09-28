@@ -39,9 +39,9 @@ class FilesListAdapter(var context: Context) : BaseAdapter() {
             holder = view.tag as ListRowHolder
         }
         if (position % 2 == 0) {
-            holder.rowContainerLayout.backgroundDrawable = context.getExtDrawable(R.drawable.white_line_selector)
+            holder.rowContainerLayout.backgroundDrawable = context.getExtDrawable(R.drawable.grey_line_selector)
         } else {
-            holder.rowContainerLayout.background = context.getExtDrawable(R.drawable.grey_line_selector)
+            holder.rowContainerLayout.background = context.getExtDrawable(R.drawable.white_line_selector)
         }
 
         holder.titleTextView.text = file.name
