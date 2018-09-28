@@ -20,11 +20,15 @@ import android.view.animation.DecelerateInterpolator
 class CardsDataAdapter(private var controller: CardsScreenProtocol) :
         ArrayAdapter<Card>(controller.context(), 0) {
 
+    companion object {
+        const val FLIP_ANIMATION_SPEED: Long = 400
+    }
+
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
-    var direction = 0
-    var distance = 10000
-    var scale = context.resources.displayMetrics.density * distance
+    var direction = Direction.FRONT
+    val distance = 10000
+    private val scale = context.resources.displayMetrics.density * distance
 
     private fun flipForward(from: View, to: View) {
         val frontAnim = ObjectAnimator.ofFloat(from, "rotationX", 0.0f, 90.0f)
@@ -51,8 +55,8 @@ class CardsDataAdapter(private var controller: CardsScreenProtocol) :
 
             }
         })
-        backAnim.duration = 400
-        frontAnim.duration = 400
+        backAnim.duration = FLIP_ANIMATION_SPEED
+        frontAnim.duration = FLIP_ANIMATION_SPEED
         frontAnim.start()
     }
 
@@ -81,8 +85,8 @@ class CardsDataAdapter(private var controller: CardsScreenProtocol) :
 
             }
         })
-        frontAnim.duration = 400
-        backAnim.duration = 400
+        frontAnim.duration = FLIP_ANIMATION_SPEED
+        backAnim.duration = FLIP_ANIMATION_SPEED
         backAnim.start()
     }
 
@@ -167,13 +171,13 @@ private class CardViewHolder(row: View, scale: Float) {
 
     var cardContainer: FrameLayout = row.find(R.id.cardContainer)
 
-    fun setup(card: Card, position: Int, count: Int, direction: Int) {
+    fun setup(card: Card, position: Int, count: Int, direction: Direction) {
         val label: String = String.format("%s of %s", (position + 1), count)
 
-        if (direction == 0){
+        if (direction == Direction.FRONT) {
             wordTextView.text = card.word
             translateTextView.text = card.translation
-        }else{
+        } else {
             wordTextView.text = card.translation
             translateTextView.text = card.word
         }

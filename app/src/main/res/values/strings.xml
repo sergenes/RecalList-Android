@@ -17,4 +17,6 @@
     <string name="login_title">Authentication</string>
     <string name="files_title">Google Drive</string>
     <string name="cards_title">Cards</string>
+    <string name="stop_button">stop</string>
+    <string name="play_button">play</string>
 </resources>
