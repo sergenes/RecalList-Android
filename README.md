@@ -15,7 +15,7 @@ Translate web1             |  Translate web2
 ![Image](web1.png)  	   |  ![Image](web2.png)
 
 # To run the app
-You need to enable Drive API and Spreadsheet API in Google developer console and to get your own CLIENT_ID for this app. Place it in project in file secrets.properties.
+You need to enable Drive API and Spreadsheet API in Google developer console and to get your own CLIENT_ID for this app. Place it in project's under the ''./app/' folder in file secrets.properties.
 ```groovy
 KEYSTORE_PASSWORD = Your password
 KEY_PASSWORD = Your password
