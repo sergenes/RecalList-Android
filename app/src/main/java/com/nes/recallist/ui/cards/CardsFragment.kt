@@ -26,7 +26,7 @@ import com.nes.recallist.ui.cards.Card.Companion.STOP_BUTTON_TAG
 import com.nes.recallist.ui.cards.Card.Companion.VISIBLE_CARD_NUMBER
 import java.util.*
 
-enum class Direction {
+enum class CardSide {
     FRONT, BACK
 }
 
@@ -55,8 +55,8 @@ class Card(var index: Int, item: ArrayList<*>) {
         const val STOP_BUTTON_TAG = 200
     }
 
-    var word: String = item[2] as String
-    var translation: String = item[3] as String
+    var frontVal: String = item[2] as String
+    var backVal: String = item[3] as String
     var from: String = item[0] as String
     var to: String = item[1] as String
     var peeped: Int = if (item.size == 5)
@@ -121,9 +121,9 @@ class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScr
         val card: Card = cardStack.adapter?.getItem(index) as Card
 
         text2Speech?.language = card.fromLanguage()
-        var wordToSay = card.word
-        if (dataAdapter?.direction == Direction.BACK) {
-            wordToSay = card.translation
+        var wordToSay = card.frontVal
+        if (dataAdapter?.currentSide == CardSide.BACK) {
+            wordToSay = card.backVal
             text2Speech?.language = card.toLanguage()
         }
 //        Toast.makeText(activity, toSpeak, Toast.LENGTH_SHORT).show()
@@ -136,14 +136,14 @@ class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScr
         }
     }
 
-    fun sayBothWords(index: Int, direction: Direction) {
+    fun sayBothWords(index: Int, cardSide: CardSide) {
         val card: Card = cardStack.adapter?.getItem(index) as Card
-        Log.i(TAG, "card.word:${card.word} index:$index; direction:$direction" )
-        var wordToSay = card.word
-        if (direction == Direction.FRONT) {
+        Log.i(TAG, "card.frontVal:${card.frontVal} index:$index; cardSide:$cardSide" )
+        var wordToSay = card.frontVal
+        if (cardSide == CardSide.FRONT) {
             text2Speech?.language = card.fromLanguage()
         } else {
-            wordToSay = card.translation
+            wordToSay = card.backVal
             text2Speech?.language = card.toLanguage()
         }
 
@@ -159,7 +159,7 @@ class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScr
     private lateinit var selectedSpreadsheetId:String
     private var dataAdapter: CardsDataAdapter? = null
     private var text2Speech: TextToSpeech? = null
-    var currentWord: Direction = Direction.FRONT
+    var currentWord: CardSide = CardSide.FRONT
     var currentPlayCard = 0
     var speechMode = SpeechMode.ONE_WORD
 
@@ -238,12 +238,12 @@ class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScr
         }
 
         leftRadioButton.setOnClickListener {
-            dataAdapter?.direction = Direction.FRONT
+            dataAdapter?.currentSide = CardSide.FRONT
             dataAdapter?.notifyDataSetChanged()
         }
 
         rightRadioButton.setOnClickListener {
-            dataAdapter?.direction = Direction.BACK
+            dataAdapter?.currentSide = CardSide.BACK
             dataAdapter?.notifyDataSetChanged()
         }
     }
@@ -298,12 +298,12 @@ class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScr
                 return
             }
             onUiThread {
-                if (currentWord == Direction.FRONT) {
-                    currentWord = Direction.BACK
+                if (currentWord == CardSide.FRONT) {
+                    currentWord = CardSide.BACK
                     Thread.sleep(PlayWordsTempo.SIDES.pause)
                 } else {
                     cardStack.discardTop(1)
-                    currentWord = Direction.FRONT
+                    currentWord = CardSide.FRONT
                     Thread.sleep(PlayWordsTempo.WORDS.pause)
 
                     //cardStack bug fix - discarded is not fire in program mode

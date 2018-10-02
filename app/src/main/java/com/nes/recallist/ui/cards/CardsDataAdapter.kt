@@ -26,7 +26,7 @@ class CardsDataAdapter(private var controller: CardsScreenProtocol) :
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
-    var direction = Direction.FRONT
+    var currentSide = CardSide.FRONT
     val distance = 10000
     private val scale = context.resources.displayMetrics.density * distance
 
@@ -105,7 +105,7 @@ class CardsDataAdapter(private var controller: CardsScreenProtocol) :
         }
 
         val card = this.getItem(position)
-        holder.setup(card!!, position, count, direction)
+        holder.setup(card!!, position, count, currentSide)
 
         if (!holder.sayButton.hasOnClickListeners()) {
             holder.sayButton.setOnClickListener {
@@ -171,15 +171,15 @@ private class CardViewHolder(row: View, scale: Float) {
 
     var cardContainer: FrameLayout = row.find(R.id.cardContainer)
 
-    fun setup(card: Card, position: Int, count: Int, direction: Direction) {
+    fun setup(card: Card, position: Int, count: Int, cardSide: CardSide) {
         val label: String = String.format("%s of %s", (position + 1), count)
 
-        if (direction == Direction.FRONT) {
-            wordTextView.text = card.word
-            translateTextView.text = card.translation
+        if (cardSide == CardSide.FRONT) {
+            wordTextView.text = card.frontVal
+            translateTextView.text = card.backVal
         } else {
-            wordTextView.text = card.translation
-            translateTextView.text = card.word
+            wordTextView.text = card.backVal
+            translateTextView.text = card.frontVal
         }
 
 
