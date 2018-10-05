@@ -25,6 +25,14 @@ DEBUG_STORE_FILE = /Users/[your user]/.android/debug.keystore
 GOOGLE_SERVICES_API_KEY = "GOOGLE_SERVICES_API_KEY"
 ```
 
+What needs to be done
+=================================
+1. Unit and UI testing.
+2. Unidirectional flow controller.
+3. Shared common module accessed from the both platforms (Kotlin native).
+4. Web app.
+
+
 Contact
 =================================
 Try to contact me if you have any questions at serge.nes @ gmail.com
