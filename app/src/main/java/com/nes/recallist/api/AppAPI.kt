@@ -16,7 +16,7 @@ import com.google.api.services.sheets.v4.SheetsScopes
 import com.nes.recallist.BuildConfig
 import java.util.*
 
-abstract class API<Result>{
+abstract class API<Result> {
 
 }
 
@@ -53,8 +53,12 @@ class AppAPI private constructor(var context: Context) {
     }
 
 
-    var googleSignInClient: GoogleSignInClient? = null
-    var googleAccountCredential: GoogleAccountCredential? = null
+    private var googleSignInClient: GoogleSignInClient? = null
+    private var googleAccountCredential: GoogleAccountCredential? = null
+
+    fun getCredentials(): GoogleAccountCredential {
+        return googleAccountCredential!!
+    }
 
     private fun init() {
         val signInOptions: GoogleSignInOptions =

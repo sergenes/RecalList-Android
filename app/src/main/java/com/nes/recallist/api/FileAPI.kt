@@ -9,7 +9,7 @@ import kotlin.concurrent.thread
 fun AppAPI.getFiles(onSuccess: (MutableList<File>) -> Unit, onFailure: (Exception) -> Unit) {
     val driveAPI = com.google.api.services.drive.Drive.Builder(AndroidHttp.newCompatibleTransport(),
             JacksonFactory.getDefaultInstance(),
-            googleAccountCredential)
+            getCredentials())
             .setApplicationName("RecalList-Android")
             .build()
     thread {

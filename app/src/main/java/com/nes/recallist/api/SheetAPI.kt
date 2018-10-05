@@ -14,7 +14,7 @@ fun AppAPI.updateSheetWithId(spreadsheetId: String, card: Card, onSuccess: () ->
 
     val sheetsAPI: Sheets = Sheets.Builder(AndroidHttp.newCompatibleTransport(),
             JacksonFactory.getDefaultInstance(),
-            googleAccountCredential)
+            getCredentials())
             .setApplicationName("RecalList-Android")
             .build()
 
@@ -50,7 +50,7 @@ fun AppAPI.getSheetById(spreadsheetId: String, onSuccess: (List<Card>) -> Unit, 
 
     val sheetsAPI: Sheets = Sheets.Builder(AndroidHttp.newCompatibleTransport(),
             JacksonFactory.getDefaultInstance(),
-            googleAccountCredential)
+            getCredentials())
             .setApplicationName("RecalList-Android")
             .build()
 
