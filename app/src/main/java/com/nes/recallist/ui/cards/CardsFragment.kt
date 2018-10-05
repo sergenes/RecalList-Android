@@ -21,6 +21,8 @@ import org.jetbrains.anko.support.v4.onUiThread
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.widget.Button
+import com.nes.recallist.api.getSheetById
+import com.nes.recallist.api.updateSheetWithId
 import com.nes.recallist.ui.cards.Card.Companion.PLAY_BUTTON_TAG
 import com.nes.recallist.ui.cards.Card.Companion.STOP_BUTTON_TAG
 import com.nes.recallist.ui.cards.Card.Companion.VISIBLE_CARD_NUMBER

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 
 import com.nes.recallist.R
 import com.nes.recallist.api.AppAPI
+import com.nes.recallist.api.getFiles
 import com.nes.recallist.ui.MainActivity
 import com.nes.recallist.ui.cards.CardsFragment
 import com.nes.transfragment.BaseTransFragment
