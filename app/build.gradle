@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'de.mannodermaus.android-junit5'
+
 ext {
     anko_version = '0.10.5'
 }
@@ -81,6 +83,15 @@ android {
             }
         }
     }
+    android.testOptions {
+        junitPlatform {
+            filters {
+                engines {
+                    include 'spek'
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -88,7 +99,12 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
-    implementation 'com.google.android.gms:play-services-auth:16.0.0'
+    testImplementation 'org.junit.platform:junit-platform-engine:1.2.0'
+    testImplementation 'org.jetbrains.spek:spek-api:1.1.5'
+    testImplementation 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
+
+
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
     // Google Drive
     // implementation 'com.google.android.gms:play-services-drive:15.0.1'
     implementation 'com.squareup.okio:okio:1.14.0'
