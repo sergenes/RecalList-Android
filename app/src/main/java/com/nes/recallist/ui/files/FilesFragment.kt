@@ -3,14 +3,12 @@ package com.nes.recallist.ui.files
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.api.services.drive.model.File
 
 import com.nes.recallist.R
-import com.nes.recallist.api.AppAPI
-import com.nes.recallist.api.getFiles
 import com.nes.recallist.ui.MainActivity
 import com.nes.recallist.ui.cards.CardsFragment
 import com.nes.transfragment.BaseTransFragment
@@ -23,7 +21,44 @@ const val APP_MIME_TYPE = "application/vnd.google-apps.spreadsheet"
  * A simple [Fragment] subclass.
  *
  */
-class FilesFragment : BaseTransFragment() {
+class FilesFragment : BaseTransFragment(), FilesViewContract.View {
+
+    private lateinit var filesPresenter: FilesPresenter
+
+    override fun setEmail(email: String?){
+        emailText.text = "unknown"
+        email.let {
+             emailText.text = it
+        }
+    }
+
+    override fun setDataSource(filesAdapter: FilesListAdapter) {
+        filesListView!!.adapter = filesAdapter
+    }
+
+    override fun notifyDataChanged() {
+        onUiThread {
+            (filesListView!!.adapter as FilesListAdapter).notifyDataSetChanged()
+        }
+    }
+
+    override fun navigateToCards(selectedFile: File) {
+        val act: MainActivity = activity as MainActivity
+        act.selectedFile = selectedFile
+        forwardToFragment(CardsFragment())
+    }
+
+    override fun showProgress() {
+        onUiThread {
+            super.showProgress()
+        }
+    }
+
+    override fun hideProgress() {
+        onUiThread {
+            super.hideProgress()
+        }
+    }
 
 
     override fun getFragmentContainer(): Int {
@@ -43,40 +78,16 @@ class FilesFragment : BaseTransFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val filesAdapter = FilesListAdapter(context!!)
+        filesPresenter = FilesPresenter(this, FilesListAdapter(context!!))
 
-        val act: MainActivity = activity as MainActivity
+        filesListView!!.onItemClickListener = filesPresenter
 
-        emailText.text = AppAPI.singleton().getEmail()
-        showProgress()
-
-        AppAPI.singleton().getFiles(onSuccess = { list ->
-            list.forEach {
-                if (APP_MIME_TYPE in it.mimeType) {
-                    Log.d("test", "response=> ${it.toPrettyString()}")
-                    filesAdapter.files.add(0, it)
-                }
-            }
-            onUiThread {
-                filesAdapter.notifyDataSetChanged()
-                hideProgress()
-            }
-
-        }, onFailure = {
-            Log.d("Auth", it.localizedMessage)
-            onUiThread {
-                hideProgress()
-            }
-        })
-
-        filesListView!!.adapter = filesAdapter
-
-        filesListView!!.setOnItemClickListener { parent, view, position, id ->
-            (filesListView!!.adapter as FilesListAdapter).selected = position
-            act.selectedFile = (filesListView!!.adapter as FilesListAdapter).files[position]
-            forwardToFragment(CardsFragment())
-        }
+        filesPresenter.onResume()
 
     }
 
+    override fun onDestroy() {
+        filesPresenter.onDestroy()
+        super.onDestroy()
+    }
 }
