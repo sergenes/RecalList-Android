@@ -21,10 +21,7 @@ fun AppAPI.getFiles(onSuccess: (MutableList<File>) -> Unit, onFailure: (Exceptio
                     .execute()
 
             if (response != null) {
-                val sortedList = response.files.asSequence().toMutableList().sortedWith(compareBy {
-                            it.modifiedTime.value
-                        }).toMutableList()
-                onSuccess(sortedList)
+                onSuccess(response.files)
             } else {
                 onFailure(Exception("err:empty response"))
             }

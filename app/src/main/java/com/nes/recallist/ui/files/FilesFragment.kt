@@ -25,10 +25,10 @@ class FilesFragment : BaseTransFragment(), FilesViewContract.View {
 
     private lateinit var filesPresenter: FilesPresenter
 
-    override fun setEmail(email: String?){
+    override fun setEmail(email: String?) {
         emailText.text = "unknown"
         email.let {
-             emailText.text = it
+            emailText.text = it
         }
     }
 
@@ -36,9 +36,14 @@ class FilesFragment : BaseTransFragment(), FilesViewContract.View {
         filesListView!!.adapter = filesAdapter
     }
 
-    override fun notifyDataChanged() {
+    override fun notifyDataChanged(items: List<File>) {
         onUiThread {
-            (filesListView!!.adapter as FilesListAdapter).notifyDataSetChanged()
+            with(filesListView!!.adapter as FilesListAdapter){
+                items.forEach {
+                    files.add(0, it)
+                }
+                notifyDataSetChanged()
+            }
         }
     }
 
@@ -78,7 +83,7 @@ class FilesFragment : BaseTransFragment(), FilesViewContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        filesPresenter = FilesPresenter(this, FilesListAdapter(context!!))
+        filesPresenter = FilesPresenter(this, FilesListAdapter(context!!), FilesInteractor())
 
         filesListView!!.onItemClickListener = filesPresenter
 
@@ -86,8 +91,8 @@ class FilesFragment : BaseTransFragment(), FilesViewContract.View {
 
     }
 
-    override fun onDestroy() {
+    override fun onDetach() {
         filesPresenter.onDestroy()
-        super.onDestroy()
+        super.onDetach()
     }
 }

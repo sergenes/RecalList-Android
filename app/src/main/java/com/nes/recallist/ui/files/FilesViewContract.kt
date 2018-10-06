@@ -12,7 +12,7 @@ interface FilesViewContract {
 
         fun setDataSource(filesAdapter: FilesListAdapter)
 
-        fun notifyDataChanged()
+        fun notifyDataChanged(items: List<File>)
 
         fun navigateToCards(selectedFile: File)
     }
@@ -24,6 +24,16 @@ interface FilesViewContract {
         fun onItemClicked(position: Int)
 
         fun onDestroy()
+    }
+
+    interface Interactor {
+        fun getEmail(): String?
+        fun getFiles(delegate: OnFinishedListener)
+
+        interface OnFinishedListener {
+            fun onSuccess(items: MutableList<File>)
+            fun onFailure(error: Exception)
+        }
     }
 
 }

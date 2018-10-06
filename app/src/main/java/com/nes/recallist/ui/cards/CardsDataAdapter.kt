@@ -18,8 +18,8 @@ import android.view.animation.DecelerateInterpolator
 import com.nes.recallist.model.Card
 
 
-class CardsDataAdapter(private var controller: CardsScreenProtocol) :
-        ArrayAdapter<Card>(controller.context(), 0) {
+class CardsDataAdapter(private var controller: CardsViewContract.Presenter) :
+        ArrayAdapter<Card>(controller.cardsView?.context()!!, 0) {
 
     companion object {
         const val FLIP_ANIMATION_SPEED: Long = 400
