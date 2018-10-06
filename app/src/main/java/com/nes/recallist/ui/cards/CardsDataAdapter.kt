@@ -15,6 +15,7 @@ import org.jetbrains.anko.find
 import android.view.View.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import com.nes.recallist.model.Card
 
 
 class CardsDataAdapter(private var controller: CardsScreenProtocol) :

@@ -23,9 +23,7 @@ import android.speech.tts.UtteranceProgressListener
 import android.widget.Button
 import com.nes.recallist.api.getSheetById
 import com.nes.recallist.api.updateSheetWithId
-import com.nes.recallist.ui.cards.Card.Companion.PLAY_BUTTON_TAG
-import com.nes.recallist.ui.cards.Card.Companion.STOP_BUTTON_TAG
-import com.nes.recallist.ui.cards.Card.Companion.VISIBLE_CARD_NUMBER
+import com.nes.recallist.model.Card
 import java.util.*
 
 enum class CardSide {
@@ -48,54 +46,17 @@ interface CardsScreenProtocol {
     fun markPressed(index: Int)
 }
 
-// MARK: - Card is data model
-class Card(var index: Int, item: ArrayList<*>) {
+/**
+ * A simple [Fragment] subclass.
+ *
+ */
+class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScreenProtocol {
 
     companion object {
         const val VISIBLE_CARD_NUMBER = 5
         const val PLAY_BUTTON_TAG = 100
         const val STOP_BUTTON_TAG = 200
     }
-
-    var frontVal: String = item[2] as String
-    var backVal: String = item[3] as String
-    var from: String = item[0] as String
-    var to: String = item[1] as String
-    var peeped: Int = if (item.size == 5)
-        (item[4] as String).toInt()
-    else
-        0
-
-    fun fromLanguage(): Locale {
-        return when {
-            "Russian" in from -> {
-                Locale("ru", "RU")
-            }
-            "Hebrew" in from -> {
-                Locale("he", "IL")
-            }
-            else -> Locale.UK
-        }
-    }
-
-    fun toLanguage(): Locale {
-        return when {
-            "Russian" in to -> {
-                Locale("ru", "RU")
-            }
-            "Hebrew" in to -> {
-                Locale("he", "IL")
-            }
-            else -> Locale.UK
-        }
-    }
-}
-
-/**
- * A simple [Fragment] subclass.
- *
- */
-class CardsFragment : BaseTransFragment(), CardStack.CardEventListener, CardsScreenProtocol {
 
     //CardsScreenProtocol
     override fun context(): Context {

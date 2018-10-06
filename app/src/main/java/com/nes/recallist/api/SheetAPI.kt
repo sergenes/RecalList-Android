@@ -4,7 +4,7 @@ import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.model.ValueRange
-import com.nes.recallist.ui.cards.Card
+import com.nes.recallist.model.Card
 import java.util.ArrayList
 import kotlin.concurrent.thread
 
@@ -45,7 +45,7 @@ fun AppAPI.updateSheetWithId(spreadsheetId: String, card: Card, onSuccess: () ->
 }
 
 fun AppAPI.getSheetById(spreadsheetId: String, onSuccess: (List<Card>) -> Unit, onFailure: (Exception) -> Unit) {
-    //            val spreadsheetId = "1apdhKnDAO1gERYc867XDspl8DFKRyeVPRWqG6aM50Sg"
+    //val spreadsheetId = "1apdhKnDAO1gERYc867XDspl8DFKRyeVPRWqG6aM50Sg"
     val range = "Phrasebook!A1:E"
 
     val sheetsAPI: Sheets = Sheets.Builder(AndroidHttp.newCompatibleTransport(),
